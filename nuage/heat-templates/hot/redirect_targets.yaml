@@ -46,6 +46,7 @@ resources:
 
   rt_l3:
     type: Nuage::Neutron::RedirectTarget
+    depends_on: router_itf_l3
     properties:
       name: 'rt_l3'
       description: 'rt_l3 description'
@@ -67,7 +68,6 @@ resources:
 
   vip_l3:
     type: Nuage::Neutron::RedirectTargetVIP
-    depends_on: router_itf_l3
     properties:
       subnet_id: {get_resource: l3_subnet}
       redirect_target_id: {get_resource: rt_l3}
