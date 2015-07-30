@@ -25,19 +25,6 @@ try:
 except ImportError:
     pass
 
-## HACK FOR PYO FILES IN RPMS
-from setuptools.command.bdist_rpm import bdist_rpm
-def custom_make_spec_file(self):
-    spec = self._original_make_spec_file()
-    lineFile = "%files -f INSTALLED_FILES"
-    spec.insert(spec.index(lineFile), "%files")
-    #spec.remove(lineFile)
-    spec.append("/")
-    return spec
-bdist_rpm._original_make_spec_file = bdist_rpm._make_spec_file
-bdist_rpm._make_spec_file = custom_make_spec_file
-## END OF HACK
-
 setuptools.setup(
     setup_requires=['pbr'],
     pbr=True)
