@@ -12,6 +12,9 @@
 #    under the License.
 
 
+from neutronclient.common import exceptions
+from neutronclient.neutron import v2_0 as neutronV20
+
 from heat.common import exception
 from heat.common.i18n import _
 from heat.engine import attributes
@@ -22,6 +25,16 @@ from heat.engine import support
 from oslo_log import log as logging
 
 LOG = logging.getLogger(__name__)
+
+
+class NuageSecGroupConstraint(constraints.BaseCustomConstraint):
+
+    expected_exceptions = (exceptions.NeutronClientException)
+
+    def validate_with_client(self, client, value):
+        neutron_client = client.client('neutron')
+        neutronV20.find_resourceid_by_name_or_id(
+            neutron_client, 'security_group', value)
 
 
 class NuageRedirectTarget(neutron.NeutronResource):
@@ -289,12 +302,18 @@ class NuageRedirectTargetRule(neutron.NeutronResource):
         ORIGIN_GROUP_ID: properties.Schema(
             properties.Schema.STRING,
             _('Origin location'),
+            constraints=[
+                constraints.CustomConstraint('redirect_target.security_group'),
+            ],
             required=True,
             update_allowed=False,
         ),
         REMOTE_GROUP_ID: properties.Schema(
             properties.Schema.STRING,
             _('Remote location'),
+            constraints=[
+                constraints.CustomConstraint('redirect_target.security_group'),
+            ],
             required=False,
             update_allowed=False,
         ),
@@ -362,6 +381,12 @@ class NuageRedirectTargetRule(neutron.NeutronResource):
             msg = _('port-range is not applicable for specified Protocol')
             raise exception.StackValidationFailed(message=msg)
 
+    def _prepare_rt_rule_properties(self, props):
+        props[self.ORIGIN_GROUP_ID] = self.client_plugin(
+        ).get_secgroup_uuids([props.get(self.ORIGIN_GROUP_ID)])[0]
+        props[self.REMOTE_GROUP_ID] = self.client_plugin(
+        ).get_secgroup_uuids([props.get(self.REMOTE_GROUP_ID)])[0]
+
     def validate(self):
         super(NuageRedirectTargetRule, self).validate()
         self._validate_port_range()
@@ -370,6 +395,8 @@ class NuageRedirectTargetRule(neutron.NeutronResource):
         props = self.prepare_properties(
             self.properties,
             self.physical_resource_name())
+        self._prepare_rt_rule_properties(props)
+
         rtr = self._get_client().create_nuage_redirect_target_rule(
             {'nuage_redirect_target_rule': props}
         )['nuage_redirect_target_rule']
@@ -392,4 +419,10 @@ def resource_mapping():
         'Nuage::Neutron::RedirectTarget': NuageRedirectTarget,
         'Nuage::Neutron::RedirectTargetVIP': NuageRedirectTargetVIP,
         'Nuage::Neutron::RedirectTargetRule': NuageRedirectTargetRule,
+    }
+
+
+def constraint_mapping():
+    return {
+        'redirect_target.security_group': NuageSecGroupConstraint
     }
