@@ -233,11 +233,10 @@ class NuageRedirectTargetVIP(neutron.NeutronResource):
         self.resource_id_set(vip['id'])
 
     def handle_delete(self):
-        client = self._get_client()
-        try:
-            client.delete_nuage_redirect_target_vip(self.resource_id)
-        except Exception as ex:
-            self.client_plugin().ignore_not_found(ex)
+        pass
+
+    def check_delete_complete(self, resource):
+        return True
 
 
 class NuageRedirectTargetRule(neutron.NeutronResource):
@@ -384,8 +383,9 @@ class NuageRedirectTargetRule(neutron.NeutronResource):
     def _prepare_rt_rule_properties(self, props):
         props[self.ORIGIN_GROUP_ID] = self.client_plugin(
         ).get_secgroup_uuids([props.get(self.ORIGIN_GROUP_ID)])[0]
-        props[self.REMOTE_GROUP_ID] = self.client_plugin(
-        ).get_secgroup_uuids([props.get(self.REMOTE_GROUP_ID)])[0]
+        if props.get(self.REMOTE_GROUP_ID) is not None:
+            props[self.REMOTE_GROUP_ID] = self.client_plugin(
+            ).get_secgroup_uuids([props.get(self.REMOTE_GROUP_ID)])[0]
 
     def validate(self):
         super(NuageRedirectTargetRule, self).validate()
