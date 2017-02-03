@@ -500,12 +500,12 @@ class NuageGatewayVport(neutron.NeutronResource):
         return self.neutron()
 
     def _validate_vport_type(self):
-        subnet = self.properties.get(self.SUBNET)
-        port = self.properties.get(self.PORT)
+        subnet = self.properties[self.SUBNET]
+        port = self.properties[self.PORT]
         if subnet and port:
             raise exception.ResourcePropertyConflict(
                 self.SUBNET, self.PORT)
-        if not subnet and not port:
+        if subnet is None and port is None:
             msg = _('Either port or subnet must be specified')
             raise exception.StackValidationFailed(message=msg)
 
