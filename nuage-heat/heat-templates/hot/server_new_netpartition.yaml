@@ -1,5 +1,8 @@
 heat_template_version: 2015-04-30
-description: Simple template to create server in new NetPartition/Router/Network with FIP's
+description: >
+  Simple template to create server in new NetPartition/Router/Network with FIPs
+
+
 parameters:
   netpartition_name:
     type: string
@@ -43,7 +46,7 @@ resources:
   netpartition:
     type: Nuage::Neutron::Netpartition
     properties:
-        name: {get_param: netpartition_name}
+        name: { get_param: netpartition_name }
 
   private_net:
     type: OS::Neutron::Net
@@ -121,4 +124,3 @@ outputs:
   vm1_public_ip:
     description: Floating IP address of server1 in public network
     value: { get_attr: [ vm1_floating_ip, floating_ip_address ] }
-

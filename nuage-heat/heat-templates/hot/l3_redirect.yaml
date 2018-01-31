@@ -24,7 +24,7 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: AppNet
-    
+
   app_subnet:
     type: OS::Neutron::Subnet
     properties:
@@ -68,7 +68,7 @@ resources:
       description: 'FW_EXT description'
       insertion_mode: L3
       redundancy_enabled: False
-      router_id: {get_resource: router}
+      router_id: { get_resource: router }
 
   fw_int:
     type: Nuage::Neutron::RedirectTarget
@@ -78,7 +78,7 @@ resources:
       description: 'FW_INT description'
       insertion_mode: L3
       redundancy_enabled: False
-      router_id: {get_resource: router}
+      router_id: { get_resource: router }
 
 
   lb:
@@ -89,7 +89,7 @@ resources:
       description: 'LB description'
       insertion_mode: L3
       redundancy_enabled: True
-      router_id: {get_resource: router}
+      router_id: { get_resource: router }
 
   app_to_db:
     type: OS::Neutron::SecurityGroup
@@ -97,12 +97,12 @@ resources:
       description: App to Db tier traffic
       name: app_to_db
       rules:
-        - remote_ip_prefix: {get_attr: [app_subnet, cidr]}
- 
+        - remote_ip_prefix: { get_attr: [app_subnet, cidr] }
+
   redirect_fw:
     type: Nuage::Neutron::RedirectTargetRule
     properties:
-      redirect_target_id: {get_resource: fw_ext}
+      redirect_target_id: { get_resource: fw_ext }
       protocol: TCP
       action: REDIRECT
       priority: 100
@@ -112,7 +112,7 @@ resources:
   redirect_lb:
     type: Nuage::Neutron::RedirectTargetRule
     properties:
-      redirect_target_id: {get_resource: lb}
+      redirect_target_id: { get_resource: lb }
       protocol: TCP
       port_range_min: 3306
       port_range_max: 3310
@@ -165,7 +165,7 @@ resources:
       flavor: m1.tiny
       networks:
         - port: { get_resource: fw_port_ext }
-        - port: { get_resource: fw_port_int } 
+        - port: { get_resource: fw_port_int }
 
   lb_server:
     type: OS::Nova::Server
@@ -175,4 +175,3 @@ resources:
       flavor: m1.tiny
       networks:
         - port: { get_resource: lb_port }
-

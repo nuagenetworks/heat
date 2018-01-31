@@ -1,4 +1,6 @@
 heat_template_version: 2015-04-30
+
+
 parameters:
   gw_name:
     type: string
@@ -6,7 +8,7 @@ parameters:
   gw_port:
     type: string
     default: eth1
- 
+
 resources:
   l3_net:
     type: OS::Neutron::Net
@@ -123,7 +125,7 @@ resources:
     properties:
       gatewayvlan: { get_resource: vlan1 }
       port: { get_resource: l3_port }
-      tenant: {get_attr: [l3_subnet, tenant_id] }
+      tenant: { get_attr: [l3_subnet, tenant_id] }
 
   l3_bridge_port:
     type: Nuage::Neutron::GatewayVport
@@ -131,33 +133,32 @@ resources:
     properties:
       gatewayvlan: { get_resource: vlan2 }
       subnet: { get_resource: l3_subnet }
-      tenant: {get_attr: [l3_subnet, tenant_id] }
+      tenant: { get_attr: [l3_subnet, tenant_id] }
 
   l2_dhcp_host_vport:
     type: Nuage::Neutron::GatewayVport
     properties:
       gatewayvlan: { get_resource: vlan3 }
       port: { get_resource: l2_port_dhcp }
-      tenant: {get_attr: [l2_subnet_dhcp, tenant_id] }
+      tenant: { get_attr: [l2_subnet_dhcp, tenant_id] }
 
   l2_bridge_vport_dhcp:
     type: Nuage::Neutron::GatewayVport
     properties:
       gatewayvlan: { get_resource: vlan4 }
       subnet: { get_resource: l2_subnet_dhcp }
-      tenant: {get_attr: [l2_subnet_dhcp, tenant_id] }
+      tenant: { get_attr: [l2_subnet_dhcp, tenant_id] }
 
   l2_host_vport:
     type: Nuage::Neutron::GatewayVport
     properties:
       gatewayvlan: { get_resource: vlan5 }
       port: { get_resource: l2_port }
-      tenant: {get_attr: [l2_subnet, tenant_id] }
+      tenant: { get_attr: [l2_subnet, tenant_id] }
 
   l2_bridge_vport:
     type: Nuage::Neutron::GatewayVport
     properties:
       gatewayvlan: { get_resource: vlan6 }
       subnet: { get_resource: l2_subnet }
-      tenant: {get_attr: [l2_subnet, tenant_id] }
-
+      tenant: { get_attr: [l2_subnet, tenant_id] }
