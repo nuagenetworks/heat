@@ -1,0 +1,64 @@
+heat_template_version: 2015-04-30
+description: >
+  Simple template to create a stateless security group and attach it to a port
+
+
+parameters:
+  network_name:
+    type: string
+    description: Name of the network to be created
+    default: heat-network
+  subnet_name:
+    type: string
+    description: ID or name of the subnet to be created
+    default: heat-subnet
+  network_cidr:
+    type: string
+    description: Network address (CIDR notation)
+    default: 10.20.30.0/24
+  security_group_name:
+    type: string
+    description: ID or name of the security group to be created
+    default: heat-security_group
+  stateful:
+    type: boolean
+    description: whether or not the security group is stateful
+    default: true
+  port_name:
+    type: string
+    description: ID or name of the port to be created
+    default: heat-port
+
+resources:
+  network:
+    type: OS::Neutron::Net
+    properties:
+      name: { get_param: network_name }
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      name: { get_param: subnet_name }
+      network_id: { get_resource: network }
+      cidr: { get_param: network_cidr }
+
+  security_group:
+    type: Nuage::Neutron::SecurityGroup
+    properties:
+      description: Add a stateless security group
+      name: { get_param: security_group_name }
+      rules:
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: tcp
+          port_range_min: 22
+          port_range_max: 22
+        - remote_ip_prefix: 0.0.0.0/0
+          protocol: icmp
+      value_specs: { stateful: { get_param: stateful } }
+
+  port:
+    type: OS::Neutron::Port
+    properties:
+      name: { get_param: port_name }
+      security_groups: [{ get_resource: security_group }]
+      network: { get_resource: network }

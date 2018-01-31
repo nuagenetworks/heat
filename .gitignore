@@ -12,6 +12,8 @@ heat.sqlite
 AUTHORS
 ChangeLog
 templates/cloudformation-examples
+nuage_openstack_heat.egg-info/
+nuage_heat.egg-info/
 .tox
 .coverage
 .coverage.*
@@ -19,3 +21,4 @@ cover
 .testrepository
 .project
 .pydevproject
+.idea

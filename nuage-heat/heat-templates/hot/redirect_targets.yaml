@@ -7,7 +7,7 @@ resources:
     type: OS::Neutron::Router
     properties:
       name: L3Domain
-                                                    
+
   l3_net:
     type: OS::Neutron::Net
     properties:
@@ -28,7 +28,7 @@ resources:
     type: OS::Neutron::Net
     properties:
       name: L2Net
- 
+
   l2_subnet:
     type: OS::Neutron::Subnet
     properties:
@@ -42,7 +42,7 @@ resources:
       description: 'rt_l2 description'
       insertion_mode: VIRTUAL_WIRE
       redundancy_enabled: False
-      subnet_id: {get_resource: l2_subnet}
+      subnet_id: { get_resource: l2_subnet }
 
   rt_l3:
     type: Nuage::Neutron::RedirectTarget
@@ -52,12 +52,12 @@ resources:
       description: 'rt_l3 description'
       insertion_mode: L3
       redundancy_enabled: True
-      router_id: {get_resource: l3_domain}
+      router_id: { get_resource: l3_domain }
 
   rtr_l3:
     type: Nuage::Neutron::RedirectTargetRule
     properties:
-      redirect_target_id: {get_resource: rt_l3}
+      redirect_target_id: { get_resource: rt_l3 }
       protocol: TCP
       port_range_min: 1000
       port_range_max: 1100
@@ -69,7 +69,6 @@ resources:
   vip_l3:
     type: Nuage::Neutron::RedirectTargetVIP
     properties:
-      subnet_id: {get_resource: l3_subnet}
-      redirect_target_id: {get_resource: rt_l3}
+      subnet_id: { get_resource: l3_subnet }
+      redirect_target_id: { get_resource: rt_l3 }
       virtual_ip_address: 10.100.10.100
-
