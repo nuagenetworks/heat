@@ -38,6 +38,9 @@ r="^(?!.*"
 # which is not known in current release
 r="$r(?:heat_tempest_plugin\.tests\.functional\.test_create_update_neutron_trunk.*)"
 
+# in newton neutron port mac_address update is not allowed,
+# attempt to do so will result in recreation of the port, so ids will not match
+r="$r|(?:heat_tempest_plugin\.tests\.functional\.test_create_update_neutron_port\.UpdatePortTest\.test_update_with_mac_address)"
 # End list of exclusions.
 r="$r)"
 
