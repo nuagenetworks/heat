@@ -1,0 +1,70 @@
+heat_template_version: '2015-04-30'
+description: |
+  Template which creates instance with a trunk
+parameters:
+  KeyName:
+    type: string
+  InstanceFlavor:
+    type: string
+  ImageId:
+    type: string
+  ExternalNetworkId:
+    type: string
+resources:
+  ParentNet:
+    type: OS::Neutron::Net
+    properties:
+      name: ParentNet
+  Subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: ParentNet }
+      name: NewSubnet
+      ip_version: 4
+      cidr: 10.100.100.0/24
+  SubportNet:
+    type: OS::Neutron::Net
+    properties:
+      name: SubportNet
+  SubportSubnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: SubportNet }
+      ip_version: 4
+      cidr: 10.200.200.0/24
+  Router:
+    type: OS::Neutron::Router
+    properties:
+      name: NewRouter
+      admin_state_up: true
+      external_gateway_info:
+        network: {get_param: ExternalNetworkId}
+  RouterInterface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: {get_resource: Router}
+      subnet_id: {get_resource: Subnet}
+  parent_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: ParentNet }
+  sub_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: SubportNet }
+  trunk:
+    type: OS::Neutron::Trunk
+    properties:
+      name: mytrunk
+      description: mydescription
+      port: { get_resource: parent_port }
+      sub_ports: [{"segmentation_id": 10, "segmentation_type": vlan, "port": { get_resource: sub_port } }]
+  Server:
+    type: OS::Nova::Server
+    depends_on: RouterInterface
+    properties:
+      image: {get_param: ImageId}
+      flavor: {get_param: InstanceFlavor}
+      key_name: {get_param: KeyName}
+      networks:
+      - { port: { get_attr: [trunk, port_id] } }
