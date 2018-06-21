@@ -24,11 +24,11 @@ class NuageSecurityGroup(SecurityGroup):
     SecurityGroup.PROPERTIES += (VALUE_SPECS,)
 
     SecurityGroup.properties_schema[VALUE_SPECS] = properties.Schema(
-            properties.Schema.MAP,
-            _('Extra parameters to include in the creation request.'),
-            default={},
-            update_allowed=True
-        )
+        properties.Schema.MAP,
+        _('Extra parameters to include in the creation request.'),
+        default={},
+        update_allowed=True
+    )
 
 
 def resource_mapping():
