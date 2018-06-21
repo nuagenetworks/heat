@@ -54,16 +54,18 @@ export KEEP_LOCALRC=1
 
 # Neutron Plugin related config
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN=ml2"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_EXT_DRIVERS=nuage_subnet,nuage_port,port_security"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vxlan"
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_EXT_DRIVERS=nuage_subnet,nuage_port,port_security,nuage_network"
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vxlan,vlan"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_TUNNELS=True"
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=physnet1:1:4000,physnet2:1:4000"
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"PHYSICAL_NETWORK=physnet1,physnet2"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=nuage,nuage_sriov,nuage_baremetal"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_TYPE_DRIVERS=vxlan"
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_TYPE_DRIVERS=vxlan,vlan"
 
 # Enable Heat
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat.git"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin nuage-heat  git://git.openstack.org/openstack/heat.git"
-
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=\"heat-tempest-plugin $BASE/new/nuage-tempest-plugin\""
 # disable neutron advanced services for nuage ci
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service q-lbaas q-fwaas q-vpn"
 
@@ -91,7 +93,6 @@ export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=0
 export DEVSTACK_GATE_CONFIGDRIVE=1
 export DEVSTACK_GATE_LIBVIRT_TYPE=kvm
 
-export TEMPEST_PLUGINS=heat-tempest-plugin
 
 # We need to configure tempest for heat, so
 # gate hook will not run tempest, tempest
