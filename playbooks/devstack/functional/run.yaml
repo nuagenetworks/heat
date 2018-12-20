@@ -82,7 +82,9 @@
           GW="172.${group}.${PRIMARY_IP##*.}.1"
           export DEVSTACK_GATE_FLOATING_RANGE="172.${group}.${PRIMARY_IP##*.}.0/24"
           export DEVSTACK_GATE_PUBLIC_NETWORK_GATEWAY="${GW}"
-          export no_proxy=${no_proxy},${PRIMARY_IP}
+
+          # add own address and VSD ip to no proxy
+          export no_proxy=$no_proxy,${PRIMARY_IP},${VSD_SERVER%%:*}
 
           function pre_test_hook {
               sudo -H sed -i 's/$/,<10/' $BASE/new/devstack/tools/cap-pip.txt
