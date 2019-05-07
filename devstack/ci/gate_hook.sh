@@ -42,11 +42,6 @@ export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_USE_PROVIDERNET_FOR_PUBLIC=False"
 
 # VSP related config
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSD_SERVERS=$VSD_SERVER"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSD_BASE_URI=/nuage/api/v5_0"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSD_SERVER_AUTH=csproot:csproot"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSD_ORGANIZATION=csp"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSD_SERVER_SSL=True"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSD_AUTH_RESOURCE=/me"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSD_DEF_NETPART_NAME=DevstackCI-${ZUUL_CHANGE}-${job}-${RANDOM}"
 
 # Keep localrc to be able to set some vars in pre_test_hook
