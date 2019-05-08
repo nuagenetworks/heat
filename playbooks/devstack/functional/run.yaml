@@ -13,12 +13,12 @@
           set -x
           cat > clonemap.yaml << EOF
           clonemap:
-            - name: openstack-infra/devstack-gate
+            - name: openstack/devstack-gate
               dest: devstack-gate
           EOF
           /usr/zuul-env/bin/zuul-cloner -m clonemap.yaml --cache-dir /opt/git \
-              git://git.openstack.org \
-              openstack-infra/devstack-gate
+          https://opendev.org \
+              openstack/devstack-gate
         executable: /bin/bash
         chdir: '{{ ansible_user_dir }}/workspace'
 
@@ -41,7 +41,7 @@
           fi
 
           if [ "{{ branch_override }}" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+              export OVERRIDE_ZUUL_BRANCH={{ branch_override }}
               export NUAGE_OS_RELEASE=${OVERRIDE_ZUUL_BRANCH#*/}
           fi
           export DISABLE_CONVERGENCE="{{ disable_convergence }}"
@@ -50,8 +50,8 @@
 
           # by default devstack-gate will include bunch of projects
           # we dont actually need. We ovewrite project list here
-          PROJECTS="openstack-infra/devstack-gate"
-          PROJECTS="openstack-dev/devstack $PROJECTS"
+          PROJECTS="openstack/devstack-gate"
+          PROJECTS="openstack/devstack $PROJECTS"
           PROJECTS="openstack/cinder $PROJECTS"
           PROJECTS="openstack/glance $PROJECTS"
           PROJECTS="openstack/heat $PROJECTS"
@@ -65,7 +65,7 @@
           PROJECTS="openstack/tempest $PROJECTS"
 
           PROJECTS="OpenStack/nuage-gate-utils $PROJECTS"
-          PROJECTS="OpenStack/nuage-heat $PROJECTS"
+          PROJECTS="OpenStack/nuage-openstack-heat $PROJECTS"
           PROJECTS="OpenStack/nuage-openstack-neutron $PROJECTS"
           PROJECTS="OpenStack/nuage-openstack-neutronclient $PROJECTS"
           PROJECTS="OpenStack/nuage-tempest-plugin $PROJECTS"
@@ -83,12 +83,12 @@
           export no_proxy=$no_proxy,${PRIMARY_IP},${VSD_SERVER%%:*}
 
           function gate_hook {
-              bash -xe $BASE/new/nuage-heat/devstack/ci/gate_hook.sh
+              bash -xe $BASE/new/nuage-openstack-heat/devstack/ci/gate_hook.sh
           }
           export -f gate_hook
 
           function post_test_hook {
-              bash -xe $BASE/new/nuage-heat/devstack/ci/post_test_hook.sh
+              bash -xe $BASE/new/nuage-openstack-heat/devstack/ci/post_test_hook.sh
           }
           export -f post_test_hook
 
