@@ -63,6 +63,7 @@
           PROJECTS="openstack/keystone $PROJECTS"
           PROJECTS="openstack/neutron $PROJECTS"
           PROJECTS="openstack/oslo.messaging $PROJECTS"
+          PROJECTS="openstack/placement $PROJECTS"
           PROJECTS="openstack/python-heatclient $PROJECTS"
           PROJECTS="openstack/nova $PROJECTS"
           PROJECTS="openstack/requirements $PROJECTS"

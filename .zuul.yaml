@@ -19,6 +19,7 @@
       - openstack/heat
       - openstack/heat-tempest-plugin
       - openstack/neutron
+      - openstack/placement
       - openstack/oslo.messaging
       - openstack/python-heatclient
       - OpenStack/nuage-gate-utils
