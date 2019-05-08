@@ -20,7 +20,7 @@ function set_local_conf {
     local DEVSTACK_PATH=$GATE_DEST/devstack
     local LOCAL_CONF=$DEVSTACK_PATH/local.conf
     cat << EOF | tee -a $LOCAL_CONF
-[[post-config|$NOVA_CONF]]
+[[post-config|\$NOVA_CONF]]
 [DEFAULT]
 security_group_api = neutron
 [neutron]
