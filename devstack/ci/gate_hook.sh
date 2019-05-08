@@ -20,11 +20,14 @@ function set_local_conf {
     local DEVSTACK_PATH=$GATE_DEST/devstack
     local LOCAL_CONF=$DEVSTACK_PATH/local.conf
     cat << EOF | tee -a $LOCAL_CONF
-[[post-config|$NOVA_CONF]]
+[[post-config|\$NOVA_CONF]]
 [DEFAULT]
 security_group_api = neutron
 [neutron]
 ovs_bridge = alubr0
+[[test-config|\$TEMPEST_CONFIG]]
+[nuage_sut]
+nuage_pat_legacy=disabled
 EOF
 }
 
@@ -65,8 +68,7 @@ export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_TYPE_DRIVERS=vxlan,vlan"
 # Enable Heat
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat.git"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin nuage-openstack-heat  git://git.openstack.org/openstack/nuage-openstack-heat"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=\"$BASE/new/heat-tempest-plugin $BASE/new/nuage-tempest-plugin\""
-
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=\"heat-tempest-plugin $BASE/new/nuage-tempest-plugin\""
 # disable neutron advanced services for nuage ci
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service q-lbaas q-fwaas q-vpn"
 

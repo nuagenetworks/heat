@@ -23,15 +23,15 @@ set -o xtrace
 
 
 
-dir=${GITDIR['nuage-heat']}/devstack
+dir=${GITDIR['nuage-openstack-heat']}/devstack
 
 
 if [[ "$1" == "stack" && "$2" == "install" ]]; then
     echo_summary "Installing Heat Nuage plugin"
-    setup_develop ${GITDIR['nuage-heat']}
+    setup_develop ${GITDIR['nuage-openstack-heat']}
 elif [[ "$1" == "stack" && "$2" == "post-config" ]]; then
     echo_summary "Configuring Heat Nuage plugin"
-    iniset $HEAT_CONF DEFAULT plugin_dirs ${GITDIR['nuage-heat']}
+    iniset $HEAT_CONF DEFAULT plugin_dirs ${GITDIR['nuage-openstack-heat']}
 fi
 
 if [[ "$1" == "unstack" ]]; then
