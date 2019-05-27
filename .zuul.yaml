@@ -15,11 +15,11 @@
     post-run: playbooks/devstack/functional/post.yaml
     timeout: 7800
     required-projects:
-      - openstack-infra/devstack-gate
       - openstack/heat
       - openstack/heat-tempest-plugin
       - openstack/neutron
       - openstack/oslo.messaging
+      - openstack/placement
       - openstack/python-heatclient
       - OpenStack/nuage-gate-utils
       - OpenStack/nuage-heat

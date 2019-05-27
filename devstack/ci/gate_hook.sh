@@ -25,6 +25,9 @@ function set_local_conf {
 security_group_api = neutron
 [neutron]
 ovs_bridge = alubr0
+[[test-config|\$TEMPEST_CONFIG]]
+[nuage_sut]
+nuage_pat_legacy=disabled
 EOF
 }
 
