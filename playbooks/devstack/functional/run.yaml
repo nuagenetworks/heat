@@ -70,7 +70,7 @@
           PROJECTS="openstack/tempest $PROJECTS"
 
           PROJECTS="OpenStack/nuage-gate-utils $PROJECTS"
-          PROJECTS="OpenStack/nuage-heat $PROJECTS"
+          PROJECTS="OpenStack/nuage-openstack-heat $PROJECTS"
           PROJECTS="OpenStack/nuage-openstack-neutron $PROJECTS"
           PROJECTS="OpenStack/nuage-openstack-neutronclient $PROJECTS"
           PROJECTS="OpenStack/nuage-tempest-plugin $PROJECTS"
@@ -88,12 +88,12 @@
           export no_proxy=$no_proxy,${PRIMARY_IP},${VSD_SERVER%%:*}
 
           function gate_hook {
-              bash -xe $BASE/new/nuage-heat/devstack/ci/gate_hook.sh
+              bash -xe $BASE/new/nuage-openstack-heat/devstack/ci/gate_hook.sh
           }
           export -f gate_hook
 
           function post_test_hook {
-              bash -xe $BASE/new/nuage-heat/devstack/ci/post_test_hook.sh
+              bash -xe $BASE/new/nuage-openstack-heat/devstack/ci/post_test_hook.sh
           }
           export -f post_test_hook
 
