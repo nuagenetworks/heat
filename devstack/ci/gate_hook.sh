@@ -63,7 +63,7 @@ export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_TYPE_DRIVERS=vxlan,vlan"
 # Enable Heat
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat.git"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin nuage-openstack-heat  git://git.openstack.org/openstack/nuage-openstack-heat"
-export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=\"heat-tempest-plugin $BASE/new/nuage-tempest-plugin\""
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=\"$BASE/new/heat-tempest-plugin $BASE/new/nuage-tempest-plugin\""
 # disable neutron advanced services for nuage ci
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service q-lbaas q-fwaas q-vpn"
 
