@@ -8,6 +8,10 @@
         - openstack-tox-pep8
         - heat-functional
 
+    periodic-saturday:
+      jobs:
+        - heat-functional
+
 - job:
     name: heat-devstack-base
     parent: legacy-dsvm-base
