@@ -30,6 +30,6 @@ echo "Checking installed Tempest plugins:"
 $TEMPEST_COMMAND -evenv-tempest -- tempest list-plugins
 
 echo "Running tempest with plugins and a custom regex filter"
-$TEMPEST_COMMAND -evenv-tempest -- tempest run --regex '^(heat_tempest_plugin\.tests\.functional\.test_create_update_neutron|nuage_tempest_plugin\.tests\.api\.(orchestration|ipv6\.vsd_managed\.test_orchestration)).*' --concurrency=$TEMPEST_CONCURRENCY
+$TEMPEST_COMMAND -evenv-tempest -- tempest run --regex '^(heat_tempest_plugin\.tests\.functional\.test_create_update_neutron|nuage_tempest_plugin\.tests\.api\.(orchestration|ipv6\.(vsd_managed\.test_orchestration|os_managed\.test_os_managed_dualstack_orchestration))).*' --concurrency=$TEMPEST_CONCURRENCY
 
 
