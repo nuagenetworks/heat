@@ -1,6 +1,6 @@
 heat_template_version: 2015-04-30
 description: >
-  Template to illustrate service chaning capabilities of Nuage VSP.
+  Template to illustrate service chaining capabilities of Nuage VSP.
 
 
 resources:
