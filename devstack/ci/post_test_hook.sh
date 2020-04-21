@@ -21,9 +21,9 @@ sudo -E $DEST/heat/heat_integrationtests/prepare_test_env.sh
 
 set -o errexit
 if [[ "${TEMPEST_OS_TEST_TIMEOUT:-}" != "" ]] ; then
-    TEMPEST_COMMAND="sudo -H -E -u tempest OS_TEST_TIMEOUT=$TEMPEST_OS_TEST_TIMEOUT tox"
+    TEMPEST_COMMAND="sudo -H -E -u tempest OS_TEST_TIMEOUT=$TEMPEST_OS_TEST_TIMEOUT UPPER_CONSTRAINTS_FILE=$DEST/requirements/upper-constraints.txt tox"
 else
-    TEMPEST_COMMAND="sudo -H -E -u tempest tox"
+    TEMPEST_COMMAND="sudo -H -E -u tempest UPPER_CONSTRAINTS_FILE=$DEST/requirements/upper-constraints.txt tox"
 fi
 cd $BASE/new/tempest
 echo "Checking installed Tempest plugins:"

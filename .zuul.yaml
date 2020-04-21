@@ -43,5 +43,6 @@
 - job:
     name: heat-functional
     parent: heat-devstack-base
+    nodeset: devstack-single-node-rhel7
     vars:
       disable_convergence: 'true'

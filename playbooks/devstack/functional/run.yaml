@@ -1,6 +1,9 @@
 - hosts: all
   name: Job for functional tests
   tasks:
+    - name: Upgrade pip
+      become: yes
+      command: pip3 install --upgrade pip
 
     - name: Ensure legacy workspace directory
       file:
