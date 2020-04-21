@@ -59,6 +59,7 @@ export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_VLAN_RANGES=physnet1:1:4000,physnet2:1:4
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"PHYSICAL_NETWORK=physnet1,physnet2"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=nuage,nuage_sriov,nuage_baremetal"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_TYPE_DRIVERS=vxlan,vlan"
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_L3_PLUGIN=NuageL3"
 
 # Enable Heat
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat.git"
@@ -74,6 +75,11 @@ export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_VSP_RELEASE=$VSP_RELEASE"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_OPENSTACK_RELEASE=$NUAGE_OS_RELEASE"
 export DEVSTACK_LOCAL_CONFIG+=$'\n'"NUAGE_CONTROLLER_PSSWD=root"
 
+# Force to use centos7
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"FORCE=yes"
+
+export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_FEDORA_MIRROR=https://download.fedoraproject.org/pub/fedora/linux"
+
 # We are only interested on Neutron and Heat, so very few services are needed
 # to deploy devstack and run the tests
 s=""
@@ -83,7 +89,7 @@ s+=",n-api,n-cond,n-cpu,n-crt,n-sch,placement-api"
 s+=",g-api,g-reg"
 s+=",q-svc,quantum"
 s+=",tempest"
-s+=",dstat"
+#s+=",dstat"
 
 export OVERRIDE_ENABLED_SERVICES="$s"
 
