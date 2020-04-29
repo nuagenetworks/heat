@@ -13,37 +13,30 @@
         - heat-functional
 
 - job:
-    name: heat-devstack-base
-    parent: legacy-dsvm-base
-    run: playbooks/devstack/functional/run.yaml
-    post-run: playbooks/devstack/functional/post.yaml
+    name: heat-functional
+    parent: networking-nuage-base
     timeout: 7800
     required-projects:
       - openstack/heat
       - openstack/heat-tempest-plugin
-      - openstack/neutron
       - openstack/oslo.messaging
       - openstack/placement
       - openstack/python-heatclient
       - OpenStack/nuage-gate-utils
       - OpenStack/nuage-openstack-heat
-      - OpenStack/nuage-openstack-neutron
-      - OpenStack/nuage-openstack-neutronclient
-      - OpenStack/nuage-tempest-plugin
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^api-ref/.*$
-      - ^doc/.*$
-      - ^nuage_heat/locale/.*$
-      - ^nuage_heat/tests/.*$
-      - ^releasenotes/.*$
     vars:
-      disable_convergence: 'false'
-      branch_override: default
-
-- job:
-    name: heat-functional
-    parent: heat-devstack-base
-    nodeset: devstack-single-node-rhel7
-    vars:
-      disable_convergence: 'true'
+      tempest_plugins:
+        - heat-tempest-plugin
+        - nuage-tempest-plugin
+      devstack_localrc:
+        Q_ML2_TENANT_NETWORK_TYPE: vxlan,vlan,nuage_hybrid_mpls
+        Q_ML2_PLUGIN_TYPE_DRIVERS: vxlan,vlan,nuage_hybrid_mpls
+      devstack_plugins:
+        heat: https://opendev.org/openstack/heat
+        nuage-openstack-heat: git://git.openstack.org/openstack/nuage-openstack-heat
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            service_available:
+              heat: True
+      tempest_test_regex: '^(heat_tempest_plugin\.tests\.functional\.test_create_update_neutron|nuage_tempest_plugin\.tests\.api\.(orchestration|ipv6\.(vsd_managed\.test_orchestration|os_managed\.test_os_managed_dualstack_orchestration))).*'
