@@ -13,35 +13,34 @@
         - heat-functional
 
 - job:
-    name: heat-devstack-base
-    parent: legacy-dsvm-base
-    run: playbooks/devstack/functional/run.yaml
-    post-run: playbooks/devstack/functional/post.yaml
-    timeout: 7800
-    required-projects:
-      - openstack/heat
-      - openstack/heat-tempest-plugin
-      - openstack/neutron
-      - openstack/oslo.messaging
-      - openstack/python-heatclient
-      - OpenStack/nuage-gate-utils
-      - OpenStack/nuage-openstack-heat
-      - OpenStack/nuage-openstack-neutron
-      - OpenStack/nuage-openstack-neutronclient
-      - OpenStack/nuage-tempest-plugin
-    irrelevant-files:
-      - ^.*\.rst$
-      - ^api-ref/.*$
-      - ^doc/.*$
-      - ^nuage_heat/locale/.*$
-      - ^nuage_heat/tests/.*$
-      - ^releasenotes/.*$
-    vars:
-      disable_convergence: 'false'
-      branch_override: default
-
-- job:
     name: heat-functional
-    parent: heat-devstack-base
+    parent: networking-nuage-base
+    branches: ^(?!stable/(newton|ocata)).*$
+    timeout: 7800
+    override-checkout: stable/rocky
+    required-projects:
+      - name: openstack/heat
+      - name: openstack/heat-tempest-plugin
+      - name: openstack/oslo.messaging
+      - name: openstack/python-heatclient
+      - name: OpenStack/nuage-gate-utils
+      - name: OpenStack/nuage-openstack-neutron
+        override-checkout: 6.0/rocky
+      - name: OpenStack/nuage-openstack-neutronclient
+        override-checkout: 6.0/rocky
+      - name: OpenStack/nuage-openstack-heat
+        override-checkout: 6.0/rocky
     vars:
-      disable_convergence: 'true'
+      vsp_release: '6.0'
+      tempest_plugins:
+        - heat-tempest-plugin
+        - nuage-tempest-plugin
+      devstack_plugins:
+        heat: https://opendev.org/openstack/heat
+        nuage-openstack-heat: git://git.openstack.org/openstack/nuage-openstack-heat
+      devstack_local_conf:
+        test-config:
+          $TEMPEST_CONFIG:
+            service_available:
+              heat: True
+      tempest_test_regex: '^(heat_tempest_plugin\.tests\.functional\.test_create_update_neutron|nuage_tempest_plugin\.tests\.api\.(orchestration|ipv6\.(vsd_managed\.test_orchestration|os_managed\.test_os_managed_dualstack_orchestration))).*'
