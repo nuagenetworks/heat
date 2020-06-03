@@ -15,7 +15,6 @@
 - job:
     name: heat-functional
     parent: networking-nuage-base
-    branches: ^(?!stable/(newton|ocata)).*$
     timeout: 7800
     override-checkout: stable/rocky
     required-projects:
@@ -27,8 +26,6 @@
       - name: OpenStack/nuage-openstack-neutron
         override-checkout: 6.0/rocky
       - name: OpenStack/nuage-openstack-neutronclient
-        override-checkout: 6.0/rocky
-      - name: OpenStack/nuage-openstack-heat
         override-checkout: 6.0/rocky
     vars:
       vsp_release: '6.0'
