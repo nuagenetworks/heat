@@ -23,6 +23,8 @@
       - openstack/python-heatclient
       - OpenStack/nuage-gate-utils
       - OpenStack/nuage-openstack-heat
+      - name: openstack/neutron-tempest-plugin
+        override-checkout: 0.3.0
     vars:
       tempest_plugins:
         - heat-tempest-plugin
