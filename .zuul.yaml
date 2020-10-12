@@ -27,6 +27,8 @@
         override-checkout: 6.0/queens
       - name: OpenStack/nuage-openstack-neutronclient
         override-checkout: 6.0/queens
+      - name: opendev.org/openstack/neutron-tempest-plugin
+        override-checkout: 0.3.0
     vars:
       vsp_release: '6.0'
       tempest_plugins:
