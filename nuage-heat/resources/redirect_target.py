@@ -373,10 +373,9 @@ class NuageRedirectTargetRule(neutron.NeutronResource):
         proto = self.properties.get(self.PROTO)
         port_min = self.properties.get(self.PORT_RANGE_MIN)
         port_max = self.properties.get(self.PORT_RANGE_MAX)
-        if (
-            (port_min is not None or port_max is not None) and
-            (proto not in [self.TCP, self.tcp, self.UDP, self.udp, '6', '17'])
-        ):
+        if (port_min is not None or port_max is not None) and (
+                proto not in [self.TCP, self.tcp,
+                              self.UDP, self.udp, '6', '17']):
             msg = _('port-range is not applicable for specified Protocol')
             raise exception.StackValidationFailed(message=msg)
 

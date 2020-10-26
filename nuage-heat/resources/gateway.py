@@ -143,7 +143,7 @@ class NuageGateway(neutron.NeutronResource):
         self.resource_id_set(gw['id'])
 
     def handle_delete(self):
-            return True
+        return True
 
     def _show_resource(self):
         return self._get_client().show_nuage_gateway(
