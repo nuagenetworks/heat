@@ -25,12 +25,13 @@
       - OpenStack/nuage-openstack-heat
     vars:
       tempest_plugins:
+        - neutron-tempest-plugin
         - heat-tempest-plugin
         - nuage-tempest-plugin
       devstack_localrc:
         Q_ML2_TENANT_NETWORK_TYPE: vxlan,vlan,nuage_hybrid_mpls
         Q_ML2_PLUGIN_TYPE_DRIVERS: vxlan,vlan,nuage_hybrid_mpls
-        NODEPOOL_FEDORA_MIRROR: https://archives.fedoraproject.org/pub/archive/fedora/linux
+        NODEPOOL_FEDORA_MIRROR: https://download.fedoraproject.org/pub/fedora/linux
       devstack_plugins:
         heat: https://opendev.org/openstack/heat
         nuage-openstack-heat: git://git.openstack.org/openstack/nuage-openstack-heat
