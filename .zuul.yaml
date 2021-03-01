@@ -25,6 +25,7 @@
       - OpenStack/nuage-openstack-heat
     vars:
       tempest_plugins:
+        - neutron-tempest-plugin
         - heat-tempest-plugin
         - nuage-tempest-plugin
       devstack_localrc:
